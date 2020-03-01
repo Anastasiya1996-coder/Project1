@@ -1,5 +1,6 @@
 #pragma once
-
+int dim = 2;
+double eps = 1e-7;
 int nomertesta = 1;
 const double k = 20; // Коэф. жесткости.
 const double m = 0.3;
@@ -76,14 +77,20 @@ double Function_system(size_t i, double tau, double* y, double* temp)
 	return Y;
 }
 
-void Vector_Print(double* A)
+double Function_system_for_symmetrical(size_t i, double tau, double* y, double* temp)
+{
+	double Y = y[i] - temp[i] - tau/2 *(F(i, tau, temp) + F(i, tau, y)); //задача для маятника, t_n не учитывается функцией
+	return Y;
+}
+
+void Print_Vector(double* A)
 {
 	for (int i = 0; i < dim; i++)
 		std::cout << A[i] << " ";
 	std::cout << std::endl;
 }
 
-void Matrix_Print(double** A)
+void Print_Matrix(double** A)
 {
 	for (int i = 0; i < dim; i++)
 	{
@@ -91,6 +98,12 @@ void Matrix_Print(double** A)
 			std::cout << A[i][j] << " ";
 		std::cout << std::endl;
 	}
+}
+
+void Delete_Matrix(double** A)
+{
+	for (size_t i = 0; i < dim; ++i)
+		delete[] A[i];
 }
 
 double norma(double* y, double* temp)
@@ -105,18 +118,3 @@ double norma(double* y, double* temp)
 	return norma;
 }
 
-double D(int i, int j, double* y, double tau, double* temp)
-{   // i - номер переменной по которой дефференцируем
-	// i - номер уравнения системы
-	double eps = 1e-7;
-	double* y_right = new double[dim];
-	for (size_t k = 0; k < dim; ++k)
-	{
-		y_right[k] = y[k];
-
-		if (k == j)
-			y_right[k] = y[k] + eps;
-	}
-
-	return ((Function_system(i, tau, y_right, temp) - Function_system(i, tau, y, temp)) / eps);
-}

@@ -128,7 +128,6 @@
   <ItemGroup>
     <ClInclude Include="Newton.h" />
     <ClInclude Include="function.h" />
-    <ClInclude Include="Header1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

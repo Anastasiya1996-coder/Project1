@@ -83,6 +83,13 @@ double Function_system_for_symmetrical(size_t i, double tau, double* y, double* 
 	return Y;
 }
 
+double Reference_solution(double t)
+{
+	double y;
+	y = cos(sqrt(k/m)*t);
+	return y;
+}
+
 void Print_Vector(double* A)
 {
 	for (int i = 0; i < dim; i++)

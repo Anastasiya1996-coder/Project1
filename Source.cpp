@@ -6,6 +6,9 @@
 #include "Newton.h"
 
 //#include "Header1.h"//test
+
+double tt = 1;
+
 double EPSILON = 1e-7;
 
 double* Runge_Kutta_4 (double t0, double T, double tau, bool record);
@@ -20,8 +23,8 @@ double* Runge_Rule(double t0, double T, double tau);
 int main(int argc, char* argv[])
 {
 	double t0, T, tau, y_0;
-	t0 = 0.; T = 1.; tau = 0.01;
-	
+	t0 = 0.; T = 1.; tau = 0.02;
+
 	Evident_Euler(t0, T, tau);
 	//std::cout << "Precision of solution E-2 = " << fabs(Evident_Euler(t0, T, 0.0006)[0] - Reference_solution(T)) << std::endl;// tau/15
 	//std::cout << "Precision of solution E-4 = " << fabs(Evident_Euler(t0, T, tau/1000)[0] - Reference_solution(T)) << std::endl;
@@ -41,8 +44,12 @@ int main(int argc, char* argv[])
 	std::cout << "Precision of solution E-4 = " << fabs(Symmetrical(t0, T, tau / 100)[0] - Reference_solution(T)) << std::endl;
 	std::cout << "Precision of solution E-7 = " << fabs(Symmetrical(t0, T, tau / 1000)[0] - Reference_solution(T)) << std::endl;*/
 
-	for (size_t i = 0; i < 2; ++i)
-		std::cout << Runge_Kutta_4(t0, T, tau, 1)[i] << std::endl;
+	for (size_t i = 0; i < 2; ++i) {
+	std::cout << Runge_Kutta_4(t0, T, tau, 1)[i] << std::endl;}
+
+	//std::cout << "Precision of solution = " << fabs(Runge_Kutta_4(t0, T, 1 * tau,1)[0] - Reference_solution(T)) << std::endl; 
+
+	
 
 	for (size_t i = 0; i < 2; ++i)
 		std::cout << Evident_Adams(t0, T, tau)[i] << std::endl;
@@ -174,6 +181,7 @@ double* Symmetrical(double t0, double T, double tau)
 double* Runge_Kutta_4(double t0, double T, double tau, bool record)
 {
 	double* y = new double[dim];
+
 	double* temp = new double[dim];
 	double* k1 = new double[dim];
 	double* k2 = new double[dim];
@@ -223,7 +231,15 @@ double* Runge_Kutta_4(double t0, double T, double tau, bool record)
 
 			file << y[0] << " " << y[1] << std::endl;
 
+	   if (fabs(i*tau-0.02)<1e-15)
+	   {
+		   std::cout << "err rk4 5tau " << fabs(y[0] - Reference_solution(i*tau))<<"\n";
+
 	   }
+	   }
+
+
+
 	}
 	file.close();
 	return y;
@@ -269,7 +285,7 @@ double* Evident_Adams(double t0, double T, double tau)
 				y_1[k] = y_0[k];
 				y_0[k] = y[k];
 			}
-
+			
 			file << y[0] << " " << y[1] << std::endl;
 		}
 				
@@ -277,7 +293,6 @@ double* Evident_Adams(double t0, double T, double tau)
 	file.close();
 	return y;
 }
-
 
 double* Predictor_Corrector(double t0, double T, double tau)
 {
@@ -436,7 +451,7 @@ double* Runge_Rule(double t0, double T, double tau)
 
 			tau = tau / 2; 
 
-			for (size_t k = 0; k < dim; ++k) 
+			for (size_t k = 0; k < 2; ++k) 
 			{
 				for (size_t j = 0; j < dim; ++j)
 					temp[j] = y1_2[j];
@@ -477,15 +492,17 @@ double* Runge_Rule(double t0, double T, double tau)
 
 			if ((norma(y, y1_2) / 15) <= EPSILON)
 			{
+				std::cout << "if" << std::endl;
 
-				if ((norma(y, y1_2) / 15) <= (EPSILON * EPSILON)) {
+				/*if ((norma(y, y1_2) / 15) <= (1000 * EPSILON))
+				{
 					tau = tau * 2;
 					std::cout << "if-if";
-				}
+				}*/
 				
 				for (size_t j = 0; j < 2; j++)
 					y[j] = y1_2[j];
-				std::cout << "if" << std::endl;
+				
 				tau = tau * 2;
 
 				length = length + tau;
@@ -494,6 +511,7 @@ double* Runge_Rule(double t0, double T, double tau)
 			}
 			else
 			{
+
 				--i;
 				std::cout << "else" << std::endl;
 			}

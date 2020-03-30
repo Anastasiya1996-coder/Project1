@@ -6,6 +6,9 @@
 #include "Newton.h"
 
 //#include "Header1.h"//test
+
+double tt = 1;
+
 double EPSILON = 1e-7;
 
 double* Runge_Kutta_4 (double t0, double T, double tau, bool record, double y0, double y1);
@@ -188,6 +191,7 @@ double* Symmetrical(double t0, double T, double tau, double y0, double y1)
 double* Runge_Kutta_4(double t0, double T, double tau, bool record, double y0, double y1)
 {
 	double* y = new double[dim];
+
 	double* temp = new double[dim];
 	double* k1 = new double[dim];
 	double* k2 = new double[dim];
@@ -237,7 +241,15 @@ double* Runge_Kutta_4(double t0, double T, double tau, bool record, double y0, d
 
 			file << y[0] << " " << y[1] << std::endl;
 
+	   if (fabs(i*tau-0.02)<1e-15)
+	   {
+		   std::cout << "err rk4 5tau " << fabs(y[0] - Reference_solution(i*tau))<<"\n";
+
 	   }
+	   }
+
+
+
 	}
 	file.close();
 	return y;
@@ -283,7 +295,7 @@ double* Evident_Adams(double t0, double T, double tau, double y0, double y1)//А
 				y_1[k] = y_0[k];
 				y_0[k] = y[k];
 			}
-
+			
 			file << y[0] << " " << y[1] << std::endl;
 		}
 				
@@ -500,7 +512,7 @@ double* Runge_Rule(double t0, double T, double tau, double y0, double y1)
 				if (error <= (EPSILON/100)) {
 					tau = tau * 2;
 					std::cout << "if-if";
-				}
+				}*/
 				
 				for (size_t j = 0; j < 2; j++)
 					y[j] = y1_2[j];
@@ -514,6 +526,7 @@ double* Runge_Rule(double t0, double T, double tau, double y0, double y1)
 			}
 			else
 			{
+
 				--i;
 				std::cout << "else" << std::endl;
 			}

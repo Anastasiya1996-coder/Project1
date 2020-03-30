@@ -39,7 +39,7 @@ double F(int i, double t, double* y) // Systema yravnenii razmera razm, i - nome
 	{
 		switch (nomertesta) {
 		case 1:
-			F = -k / m * y[0];
+			F = -(k / m) * y[0];
 			return F;
 		case 2:
 			F = 6 * y[0] - y[1] * y[1] + 1;
